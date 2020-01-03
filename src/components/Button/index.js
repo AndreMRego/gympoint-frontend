@@ -12,6 +12,7 @@ export default function Button({
   disabled,
   children,
   height,
+  width,
   type,
   onClick,
 }) {
@@ -20,6 +21,7 @@ export default function Button({
   return (
     <Container
       padding={padding}
+      width={width}
       height={height}
       color={color}
       type={type}
@@ -37,6 +39,7 @@ Button.propTypes = {
   icon: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   height: PropTypes.number,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   type: PropTypes.string,
   onClick: PropTypes.func,
   padding: PropTypes.bool,
@@ -48,6 +51,7 @@ Button.defaultProps = {
   icon: '',
   children: '',
   height: 45,
+  width: '100%',
   type: 'button',
   onClick: () => {},
   padding: false,

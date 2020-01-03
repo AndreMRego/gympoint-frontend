@@ -7,6 +7,7 @@ export const Container = styled.button.attrs(props => ({
   display: flex;
   justify-content: center;
   align-items: center;
+  width: ${props => props.width && `${props.width}px`};
   height: ${props => props.height}px;
   border: 0;
   color: #fff;

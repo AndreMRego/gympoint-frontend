@@ -10,6 +10,7 @@ export const Wrapper = styled(Form)`
     color: #444;
     margin-bottom: 8px;
     font-weight: bold;
+    font-size: 0.9rem;
   }
 
   input {
