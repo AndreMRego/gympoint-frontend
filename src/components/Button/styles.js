@@ -29,4 +29,9 @@ export const Container = styled.button.attrs(props => ({
     cursor: not-allowed;
     opacity: 0.6;
   }
+
+  span {
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
 `;

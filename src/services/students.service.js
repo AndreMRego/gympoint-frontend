@@ -6,9 +6,9 @@ import api from './api';
 
 const ENDPOINT = 'students';
 
-export const findAll = async () => {
+export const findAll = async ({ query }) => {
   try {
-    const { data } = await api.get(ENDPOINT);
+    const { data } = await api.get(`${ENDPOINT}?q=${query}`);
 
     return data;
   } catch (error) {
@@ -17,10 +17,47 @@ export const findAll = async () => {
   }
 };
 
-export const update = async ({ id, student }) => {
+export const findById = async ({ id }) => {
   try {
-    const response = await api.put(`ENDPOINT/${id}`, {
-      student,
+    const { data } = await api.get(`${ENDPOINT}/${id}`);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const create = async ({ name, email, nasc_date, weight, height }) => {
+  try {
+    const response = await api.post(ENDPOINT, {
+      name,
+      email,
+      nasc_date: new Date(nasc_date),
+      weight,
+      height,
+    });
+
+    if (response.status) {
+      toast.success('Estudante criado com sucesso!');
+      history.push('/students');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const update = async ({ id, student }) => {
+  const { name, email, nasc_date, weight, height } = student;
+
+  try {
+    const response = await api.put(`${ENDPOINT}/${id}`, {
+      name,
+      email,
+      nasc_date,
+      weight,
+      height,
     });
 
     if (response.status) {
@@ -35,7 +72,7 @@ export const update = async ({ id, student }) => {
 
 export const deleteById = async ({ id }) => {
   try {
-    const response = await api.delete(`ENDPOINT/${id}`);
+    const response = await api.delete(`${ENDPOINT}/${id}`);
 
     if (response.status) {
       toast.success('Registro apagado com sucesso!');

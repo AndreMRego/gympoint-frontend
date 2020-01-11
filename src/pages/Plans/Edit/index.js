@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { Input } from '@rocketseat/unform';
 import PropTypes from 'prop-types';
@@ -6,24 +6,21 @@ import * as Yup from 'yup';
 
 import Button from '~/components/Button';
 import Form from '~/components/Form';
-import { create } from '~/services/plans.service';
+import { usePlan } from '~/hooks/get-plan.hook';
+import { update } from '~/services/plans.service';
 import { formatPrice } from '~/utils/format';
 
 import { Container, TopHeader, Card } from '../styles';
 
 const schema = Yup.object().shape({
-  title: Yup.string().required('O título é obrigatório'),
-  duration: Yup.string().required('A duração é obrigatória'),
-  price: Yup.string().required('O preço é obrigatório'),
+  title: Yup.string(),
+  duration: Yup.string(),
+  price: Yup.string(),
   finalPrice: Yup.string(),
 });
-
-export default function PlanNew({ history }) {
-  const [plan, setPlan] = useState({
-    duration: 0,
-    price: 0,
-    finalPrice: 0,
-  });
+export default function PlanEdit({ history, match }) {
+  const { id } = match.params;
+  const [plan, setPlan] = usePlan({ id });
 
   const finalPrice = useMemo(
     () => plan && formatPrice(plan.duration * plan.price),
@@ -34,27 +31,20 @@ export default function PlanNew({ history }) {
     history.goBack();
   }
 
-  async function handleSubmit({ title, duration, price }) {
-    await create({ title, duration, price });
+  async function handleSubmit(data) {
+    await update({ id, plan: data });
   }
 
   return (
     <Container>
       <TopHeader>
-        <h2>Cadastro de plano</h2>
+        <h2>Edição de plano</h2>
         <div>
-          <Button
-            icon="MdChevronLeft"
-            width={112}
-            height={36}
-            color="#999999"
-            onClick={goBack}
-          >
+          <Button width={112} height={36} color="#999999" onClick={goBack}>
             VOLTAR
           </Button>
 
           <Button
-            icon="MdCheck"
             type="submit"
             form="newPlan"
             width={112}
@@ -66,7 +56,12 @@ export default function PlanNew({ history }) {
         </div>
       </TopHeader>
       <Card>
-        <Form id="newPlan" schema={schema} onSubmit={handleSubmit}>
+        <Form
+          initialData={plan}
+          id="newPlan"
+          schema={schema}
+          onSubmit={handleSubmit}
+        >
           <Input label="TÍTULO DO PLANO" name="title" />
           <div>
             <div>
@@ -88,7 +83,7 @@ export default function PlanNew({ history }) {
                 label="PREÇO TOTAL"
                 readOnly
                 name="finalPrice"
-                value={finalPrice}
+                value={finalPrice || 0}
               />
             </div>
           </div>
@@ -98,8 +93,13 @@ export default function PlanNew({ history }) {
   );
 }
 
-PlanNew.propTypes = {
+PlanEdit.propTypes = {
   history: PropTypes.shape({
     goBack: PropTypes.func,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
   }).isRequired,
 };

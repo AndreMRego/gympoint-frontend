@@ -6,6 +6,8 @@ export const Wrapper = styled(Form)`
   flex-direction: column;
   width: 100%;
 
+  padding: 30px;
+
   label {
     color: #444;
     margin-bottom: 8px;

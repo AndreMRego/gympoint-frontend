@@ -1,3 +1,5 @@
+import { MdCheckCircle } from 'react-icons/md';
+
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -5,6 +7,10 @@ export const Container = styled.div`
   flex-direction: column;
 
   margin: 0 120px;
+`;
+
+export const Status = styled(MdCheckCircle)`
+  color: ${props => (props.status.active ? '#42CB59' : '#DDD')};
 `;
 
 export const TopHeader = styled.div`
@@ -41,7 +47,7 @@ export const Card = styled.div`
   background: #fff;
 
   form {
-    > div {
+    .row {
       display: flex;
       flex: 1;
 
@@ -52,8 +58,15 @@ export const Card = styled.div`
 
         margin-right: 15px;
 
+        #end_date {
+          background: #f5f5f5;
+        }
+
         :last-child {
           margin: 0;
+          input {
+            background: #f5f5f5;
+          }
         }
       }
     }

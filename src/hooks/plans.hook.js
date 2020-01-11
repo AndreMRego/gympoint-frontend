@@ -34,5 +34,5 @@ export function usePlans() {
     fetchPlans(setPlans);
   }, []);
 
-  return plans;
+  return [plans, setPlans];
 }

@@ -4,28 +4,36 @@ import PropTypes from 'prop-types';
 
 import Button from '~/components/Button';
 import Table from '~/components/Table';
-import { usePlans } from '~/hooks/plans.hook';
-import { deleteById } from '~/services/plans.service';
+import { useRegistrations } from '~/hooks/registrations.hook';
+import { deleteById } from '~/services/registrations.service';
 
-import { Container, TopHeader, Card } from './styles';
+import { Container, TopHeader, Card, Status } from './styles';
 
-export default function Plans({ history }) {
-  const [plans, setPlans] = usePlans();
+export default function Registrations({ history }) {
+  const [registrations, setRegistrations] = useRegistrations();
 
   const columns = [
     {
-      Header: 'TÍTULO',
-      accessor: 'title',
-      width: 300,
+      Header: 'ALUNO',
+      accessor: 'Student.name',
+    },
+    {
+      Header: 'PLANO',
+      accessor: 'Plan.title',
+    },
+    {
+      Header: 'INÍCIO',
+      accessor: 'startDateFormatted',
+    },
+    {
+      Header: 'TÉRMINO',
+      accessor: 'endDateFormatted',
     },
 
     {
-      Header: 'DURAÇÃO',
-      accessor: 'formatDuration',
-    },
-    {
-      Header: 'VALOR p/ MÊS',
-      accessor: 'formatPrice',
+      Header: 'ATIVA',
+      accessor: 'active',
+      Cell: ({ row }) => <Status size={20} status={row.original} />,
     },
     {
       Header: '',
@@ -50,29 +58,29 @@ export default function Plans({ history }) {
   ];
 
   function handleNew() {
-    history.push(`plans/new`);
+    history.push(`registrations/new`);
   }
 
   function handleEdit({ id }) {
-    history.push(`plans/edit/${id}`);
-    console.tron.log(id);
+    history.push(`registrations/edit/${id}`);
   }
 
   async function handleDelete({ id }) {
     await deleteById({ id });
 
-    const list = [...plans];
-    const planIndex = list.findIndex(plan => plan.id === id);
-    if (planIndex >= 0) {
-      list.splice(planIndex, 1);
-      setPlans(list);
+    const list = [...registrations];
+    const registrationIndex = list.findIndex(
+      registration => registration.id === id
+    );
+    if (registrationIndex >= 0) {
+      list.splice(registrationIndex, 1);
+      setRegistrations(list);
     }
   }
-
   return (
     <Container>
       <TopHeader>
-        <h2>Gerenciando planos</h2>
+        <h2>Gerenciando matrículas</h2>
 
         <Button
           icon="MdAdd"
@@ -84,13 +92,14 @@ export default function Plans({ history }) {
           CADASTRAR
         </Button>
       </TopHeader>
+
       <Card>
-        <Table columns={columns} data={plans} />
+        <Table columns={columns} data={registrations} />
       </Card>
     </Container>
   );
 }
-Plans.propTypes = {
+Registrations.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,

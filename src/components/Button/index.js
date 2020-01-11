@@ -1,5 +1,5 @@
 import React from 'react';
-import * as FontAwesome from 'react-icons/fa';
+import * as MaterialDesign from 'react-icons/md';
 
 import PropTypes from 'prop-types';
 
@@ -15,8 +15,9 @@ export default function Button({
   width,
   type,
   onClick,
+  ...rest
 }) {
-  const Icon = FontAwesome[icon];
+  const Icon = MaterialDesign[icon];
 
   return (
     <Container
@@ -27,6 +28,7 @@ export default function Button({
       type={type}
       onClick={onClick}
       disabled={disabled}
+      {...rest}
     >
       {icon && <Icon size={16} color="#FFF" />}
       {children && <span>{children}</span>}

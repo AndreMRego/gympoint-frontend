@@ -8,9 +8,9 @@ import { findAll } from '~/services/students.service';
  * @param {Function} setStudents
  */
 
-const fetchStudents = async setStudents => {
+const fetchStudents = async ({ query, setStudents }) => {
   try {
-    const data = await findAll();
+    const data = await findAll({ query });
 
     return setStudents(data);
   } catch (error) {}
@@ -20,12 +20,12 @@ const fetchStudents = async setStudents => {
  * this hook is responsible for fetch students and set on state
  */
 
-export function useStudents() {
+export function useStudents({ query }) {
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    fetchStudents(setStudents);
-  }, []);
+    fetchStudents({ query, setStudents });
+  }, [query]);
 
-  return students;
+  return [students, setStudents];
 }

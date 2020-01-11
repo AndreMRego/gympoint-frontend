@@ -4,11 +4,11 @@ import history from '~/services/history';
 
 import api from './api';
 
-const ENDPOINT = 'plans';
+const ENDPOINT = 'registrations';
 
 export const findAll = async () => {
   try {
-    const { data } = await api.get(ENDPOINT);
+    const { data } = await api.get(`${ENDPOINT}`);
 
     return data;
   } catch (error) {
@@ -27,17 +27,20 @@ export const findById = async ({ id }) => {
     throw error;
   }
 };
-export const create = async ({ title, duration, price }) => {
+
+export const create = async ({ name, email, nasc_date, weight, height }) => {
   try {
     const response = await api.post(ENDPOINT, {
-      title,
-      duration,
-      price,
+      name,
+      email,
+      nasc_date: new Date(nasc_date),
+      weight,
+      height,
     });
 
     if (response.status) {
-      toast.success('Plano criado com sucesso!');
-      history.push('/plans');
+      toast.success('Estudante criado com sucesso!');
+      history.push('/students');
     }
   } catch (error) {
     console.log(error);
@@ -45,19 +48,21 @@ export const create = async ({ title, duration, price }) => {
   }
 };
 
-export const update = async ({ id, plan }) => {
-  try {
-    const { title, duration, price } = plan;
+export const update = async ({ id, student }) => {
+  const { name, email, nasc_date, weight, height } = student;
 
+  try {
     const response = await api.put(`${ENDPOINT}/${id}`, {
-      title,
-      duration,
-      price,
+      name,
+      email,
+      nasc_date,
+      weight,
+      height,
     });
 
     if (response.status) {
-      toast.success('Plano atualizado com sucesso!');
-      history.push('/plans');
+      toast.success('Aluno atualizado com sucesso!');
+      history.push('/students');
     }
   } catch (error) {
     console.log(error);
@@ -70,7 +75,8 @@ export const deleteById = async ({ id }) => {
     const response = await api.delete(`${ENDPOINT}/${id}`);
 
     if (response.status) {
-      toast.success('Plano apagado com sucesso!');
+      toast.success('Registro apagado com sucesso!');
+      history.push('/registrations');
     }
   } catch (error) {
     console.log(error);

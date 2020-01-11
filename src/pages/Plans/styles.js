@@ -17,15 +17,6 @@ export const TopHeader = styled.div`
   div {
     display: flex;
 
-    span {
-      font-size: 0.8rem;
-      font-weight: bold;
-      padding-right: 15px;
-
-      text-align: end;
-      flex: 1;
-    }
-
     input {
       background: #fff;
       margin-left: 16px;
