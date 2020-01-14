@@ -21,7 +21,7 @@ const schema = Yup.object().shape({
 });
 export default function StudentEdit({ history, match }) {
   const { id } = match.params;
-  const [student] = useStudent({ id });
+  const student = useStudent({ id });
 
   function goBack() {
     history.goBack();

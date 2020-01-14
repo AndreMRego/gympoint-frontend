@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.table`
+  background: #fff;
   tr {
     :last-child {
       td {
@@ -29,13 +30,14 @@ export const Container = styled.table`
 
     button {
       border: 0;
-      color: #4d85ee;
       font-size: 0.9rem;
 
-      &:last-child {
-        color: #de3b3b;
-        margin-left: 20px;
+      &:first-child {
+        color: #4d85ee;
       }
+
+      color: #de3b3b;
+      margin-left: 20px;
     }
   }
 `;

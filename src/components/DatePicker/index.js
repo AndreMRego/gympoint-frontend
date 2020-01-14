@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
 import { useField } from '@rocketseat/unform';
@@ -20,7 +20,6 @@ export default function DatePicker({
 }) {
   const ref = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
-  // const [selected, setSelected] = useState(defaultValue);
 
   useEffect(() => {
     registerField({
@@ -56,13 +55,16 @@ export default function DatePicker({
 DatePicker.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-
+  value: PropTypes.instanceOf(Date),
+  onChange: PropTypes.func,
   placeholder: PropTypes.string.isRequired,
   readOnly: PropTypes.bool,
   maxDate: PropTypes.bool,
 };
 
 DatePicker.defaultProps = {
+  onChange: () => {},
+  value: new Date(),
   readOnly: false,
   maxDate: false,
 };

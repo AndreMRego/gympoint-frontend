@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { useField } from '@rocketseat/unform';
 import PropTypes from 'prop-types';
@@ -17,27 +17,35 @@ export default function ReactSelect({
   const { fieldName, registerField, defaultValue, error } = useField(name);
 
   const filterItems = valueReceive => {
-    if (!valueReceive) return null;
     return options.filter(i =>
       i.name.toLowerCase().includes(valueReceive.toLowerCase())
     );
   };
 
-  const loadOptions = (valueReceive, callback) => {
-    callback(filterItems(valueReceive));
-  };
+  const loadOptions = inputValue =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        resolve(filterItems(inputValue));
+      }, 500);
+    });
 
   function parseSelectValue(selectRef) {
-    const selectValue = selectRef.state.value;
+    const selectValue = selectRef.props.value;
 
     return selectValue ? selectValue.id : '';
+  }
+
+  function getDefaultValue() {
+    if (!defaultValue) return null;
+
+    return options.find(option => option.id === defaultValue);
   }
 
   useEffect(() => {
     registerField({
       name: fieldName,
       ref: ref.current,
-      path: 'state.value',
+      path: 'props.value',
       parseValue: parseSelectValue,
       clearValue: selectRef => {
         selectRef.select.clearValue();
@@ -55,12 +63,12 @@ export default function ReactSelect({
         classNamePrefix="react-select"
         name={fieldName}
         aria-label={fieldName}
-        loadOptions={loadOptions}
-        defaultOptions
+        loadOptions={inputValue => loadOptions(inputValue)}
+        defaultOptions={options}
         ref={ref}
-        value={defaultValue}
+        value={getDefaultValue()}
         onChange={onChange}
-        noOptionsMessage={() => 'Digite para carregar...'}
+        loadingMessage={() => 'Carregando...'}
         getOptionValue={option => option.id}
         getOptionLabel={option => option.name}
         onInputChange={value => onInputChange(value)}

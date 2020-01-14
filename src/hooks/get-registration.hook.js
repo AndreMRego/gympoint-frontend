@@ -22,6 +22,7 @@ const fetchRegistration = async ({ setRegistration, id }) => {
       end_date: parseISO(data.end_date),
       price: formatPrice(data.price),
       plan_id: data.plan_id,
+      student_id: data.student_id,
       student: data.Student,
       plan: { id: data.Plan.id, name: data.Plan.title, ...data.Plan },
     };
